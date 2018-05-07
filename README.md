@@ -1,6 +1,6 @@
 
 ## 环境说明
-`系统版本： Ubuntu 14.04  
+`系统版本： Ubuntu 14.04    
 项目地址： https://github.com/janx/ethereum-bootstrap
 `
 
