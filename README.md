@@ -19,17 +19,20 @@
 > 参考： https://www.cnblogs.com/lyon2014/p/4715379.html`
 
 1.lsb_release -a  
-> No LSB modules are available.   
+```shell
+No LSB modules are available.   
 Distributor ID:	Ubuntu   
 Description:	Ubuntu 14.04.5 LTS   
 Release:	14.04   
 Codename:	trusty   
+```
 
 2.cd /etc/apt
 3.mv sources.list sources.list_bak
 
- 4.vi sources.list
- >deb http://mirrors.aliyun.com/ubuntu/ trusty main multiverse restricted universe  
+4.vi sources.list
+```shell 
+deb http://mirrors.aliyun.com/ubuntu/ trusty main multiverse restricted universe  
 deb http://mirrors.aliyun.com/ubuntu/ trusty-backports main multiverse restricted universe  
 deb http://mirrors.aliyun.com/ubuntu/ trusty-proposed main multiverse restricted universe  
 deb http://mirrors.aliyun.com/ubuntu/ trusty-security main multiverse restricted universe  
@@ -38,7 +41,8 @@ deb-src http://mirrors.aliyun.com/ubuntu/ trusty main multiverse restricted univ
 deb-src http://mirrors.aliyun.com/ubuntu/ trusty-backports main multiverse restricted universe  
 deb-src http://mirrors.aliyun.com/ubuntu/ trusty-proposed main multiverse restricted universe  
 deb-src http://mirrors.aliyun.com/ubuntu/ trusty-security main multiverse restricted universe    
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-updates main multiverse restricted universe    
+deb-src http://mirrors.aliyun.com/ubuntu/ trusty-updates main multiverse restricted universe  
+```
 
 5.vi /etc/resolv.conf 
 > nameserver 223.5.5.5
@@ -55,8 +59,10 @@ deb-src http://mirrors.aliyun.com/ubuntu/ trusty-updates main multiverse restric
 
 ## clone项目
 cd /root
-> ethereum 源项目地址：https://github.com/cryptape/ethereum-bootstrap.git
+```shell
+#ethereum 源项目地址：https://github.com/cryptape/ethereum-bootstrap.git
 git clone https://github.com/dragonetail/ethereum-bootstrap.git
+```
 
 ## 创建bootnode
 1.cd ethereum-bootstrap/3.LocalNetworkCluster
@@ -67,7 +73,9 @@ cd bootnode
 3.生成bootnode的节点Key(bootnode的节点Key)
 bootnode --genkey=boot.key
 ll
-> -rw------- 1 root root   64 May  8 06:06 boot.key   
+```shell
+-rw------- 1 root root   64 May  8 06:06 boot.key   
+```
 
 4.使用genesis.json初始化bootnode的chaincode信息
 geth --datadir data --networkid 20180412  init ../genesis.json 
@@ -81,11 +89,14 @@ INFO [05-08|06:14:20] Writing custom genesis block
 INFO [05-08|06:14:20] Persisted trie from memory database      nodes=7 size=1.31kB time=470.262µs gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B  
 INFO [05-08|06:14:20] Successfully wrote genesis state         database=lightchaindata    
 
+
 生成了data目录，存储了chaincode的数据
 ls -ltr
->total 12  
+```shell
+total 12  
 -rw------- 1 root root   64 May  8 06:06 boot.key  
 drwx------ 4 root root 4096 May  8 06:14 data  
+```
 
 5.启动bootnode，获取bootnode的接入地址串
 nohup bootnode --nodekey=boot.key &
@@ -116,7 +127,8 @@ INFO [05-08|06:22:19] Successfully wrote genesis state           database=lightc
 
 3.启动节点，参数主要为网络ID与bootnode的一致，bootnodes的内容指向bootnode节点的地址串，指导端口  
 geth --datadir ./data --networkid 20180412 --bootnodes=enode://912a150237986ed3df6998fe516b1ae7e82f729546c695ace3aa172f5276ca6dffffaf9125eaa7c8b1adea60f002bd7df2d15d021d1678657663af46606c06d6@192.168.0.150:30301 --port 30303 console  
-> INFO [05-08|06:23:08] Maximum peer count                       ETH=25 LES=0 total=25  
+```shell
+INFO [05-08|06:23:08] Maximum peer count                       ETH=25 LES=0 total=25  
 INFO [05-08|06:23:08] Starting peer-to-peer node               instance=Geth/v1.8.7-stable-66432f38/linux-amd64/go1.10  
 INFO [05-08|06:23:08] Allocated cache and file handles         database=/root/ethereum-bootstrap/3.LocalNetworkCluster/node1/data/geth/chaindata cache=768 handles=512  
 WARN [05-08|06:23:08] Upgrading database to use lookup entries   
@@ -136,11 +148,10 @@ INFO [05-08|06:23:10] IPC endpoint opened                      url=/root/ethereu
 Welcome to the Geth JavaScript console!  
 instance: Geth/v1.8.7-stable-66432f38/linux-amd64/go1.10  
  modules: admin:1.0 debug:1.0 eth:1.0 miner:1.0 net:1.0 personal:1.0 rpc:1.0   txpool:1.0 web3:1.0  
->   
->   
+
 > admin.nodeInfo.enode    
 "enode://c9f3df1fe5ecb1418be32f5a4b047d02a0fa30de776a99127be94c44d470935d964e275a99e56b7d29c00c8a80673028dec8ba7fd90e4f48fceac18de061f125@[::]:30303"  
->   
+ 
 > admin.nodeInfo  
 {  
   enode: "enode://c9f3df1fe5ecb1418be32f5a4b047d02a0fa30de776a99127be94c44d470935d964e275a99e56b7d29c00c8a80673028dec8ba7fd90e4f48fceac18de061f125@[::]:30303",  
@@ -168,6 +179,7 @@ instance: Geth/v1.8.7-stable-66432f38/linux-amd64/go1.10
     }    
   }  
 }  
+```
 
 ## 启动第二个节点
 1.
@@ -191,6 +203,7 @@ geth --datadir ./data --networkid 20180412 --bootnodes=enode://912a150237986ed3d
 
 4.验证节点是否正常接入  
 这个时候在第一个节点或第二个节点上执行net.peerCount和admin.peers，可以看到相关节点的ID信息已经互相接入了  
+```shell
 > net.peerCount  
 1  
 > admin.peers  
@@ -213,7 +226,7 @@ geth --datadir ./data --networkid 20180412 --bootnodes=enode://912a150237986ed3d
       }  
     }  
 }]  
-
+```
 
 
 ### 开发环境搭建 
