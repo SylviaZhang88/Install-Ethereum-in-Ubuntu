@@ -181,6 +181,7 @@ instance: Geth/v1.8.7-stable-66432f38/linux-amd64/go1.10
 }  
 ```
 
+
 ## 启动第二个节点
 1.
 root@ethereum-2:~/ethereum-bootstrap/3.LocalNetworkCluster# mkdir node2
@@ -188,7 +189,8 @@ cd node2/
 
 2.
 geth --datadir data --networkid 20180412 init ../genesis.json 
-> INFO [05-08|06:29:16] Maximum peer count                       ETH=25 LES=0 total=25  
+```shell
+INFO [05-08|06:29:16] Maximum peer count                       ETH=25 LES=0 total=25  
 INFO [05-08|06:29:16] Allocated cache and file handles         database=/root/ethereum-bootstrap/3.LocalNetworkCluster/node2/data/geth/chaindata cache=16 handles=16  
 INFO [05-08|06:29:16] Writing custom genesis block   
 INFO [05-08|06:29:16] Persisted trie from memory database      nodes=7 size=1.31kB time=61.556µs gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B  
@@ -197,6 +199,7 @@ INFO [05-08|06:29:16] Allocated cache and file handles         database=/root/et
 INFO [05-08|06:29:16] Writing custom genesis block   
 INFO [05-08|06:29:16] Persisted trie from memory database      nodes=7 size=1.31kB time=417.029µs gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B  
 INFO [05-08|06:29:16] Successfully wrote genesis state         database=lightchaindata     
+```
 
 3.
 geth --datadir ./data --networkid 20180412 --bootnodes=enode://912a150237986ed3df6998fe516b1ae7e82f729546c695ace3aa172f5276ca6dffffaf9125eaa7c8b1adea60f002bd7df2d15d021d1678657663af46606c06d6@192.168.0.150:30301 --port 30303 console
