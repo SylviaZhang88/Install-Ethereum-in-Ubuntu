@@ -576,8 +576,25 @@ geth --datadir ./data --networkid 20180412 --ws --wsaddr 0.0.0.0  --wsport 8546 
 ```
 
 
-以太坊的工作原理
+## 智能合约开发
 ```shell
+# 智能合约开发语言solidity
+# 编译solidity程序需要对应的编译器，安装solc
+cd ethereum-api
+npm install -g solc
+/opt/node-v8.11.1-linux-x64/bin/solcjs -> /opt/node-v8.11.1-linux-x64/lib/node_modules/solc/solcjs
++ solc@0.4.24
+added 66 packages in 22.068s
+
+# 使用solc编译合约Coin.sol(页面上的编译既调用了solc)
+cd /root/ethereum-api/public/solidity
+solc --abi --bin testContract.sol 
+```
+
+## 一些参考链接
+
+```shell
+## 以太坊
 # 以太坊的工作原理
 https://blog.csdn.net/itchosen/article/details/78655903
 
@@ -590,19 +607,20 @@ https://blog.csdn.net/DDFFR/article/details/78919530
 # 以太坊数据存储分析
 https://blog.csdn.net/ddffr/article/details/77500513
 
-
-```
-
-## 一些参考
-```shell 
+# web3 api
 https://web3js.readthedocs.io/en/1.0/web3-eth-subscribe.html
 
-
-https://amsterdam.luminis.eu/2015/01/01/c3js-directives-for-angularjs/
+## 以太坊的一些原理（智能合约）
 https://www.94eth.com/tutorial/shen-ru-qian-chu-yi-tai-fang-01-qu-kuai-lian
 
-remix IDE 
+# 智能合约remix IDE 
 https://remix.ethereum.org/#version=soljson-v0.4.15+commit.bbb8e64f.js
+
+## 开发
+# angularjs chart C3
+https://amsterdam.luminis.eu/2015/01/01/c3js-directives-for-angularjs/
+
+
 ```
 Address Growth Chart
 Block Difficulty Growth Chart
