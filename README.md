@@ -238,10 +238,12 @@ nohup bootnode --nodekey=boot.key &
 
 # 启动节点一
 cd /root/ethereum-bootstrap/3.LocalNetworkCluster/node1
+
 geth --datadir ./data --networkid 20180412 --bootnodes=enode://912a150237986ed3df6998fe516b1ae7e82f729546c695ace3aa172f5276ca6dffffaf9125eaa7c8b1adea60f002bd7df2d15d021d1678657663af46606c06d6@192.168.0.150:30301 --port 30303 console 
 
 # 启动节点二
 cd /root/ethereum-bootstrap/3.LocalNetworkCluster/node2
+
 geth --datadir ./data --networkid 20180412 --bootnodes=enode://912a150237986ed3df6998fe516b1ae7e82f729546c695ace3aa172f5276ca6dffffaf9125eaa7c8b1adea60f002bd7df2d15d021d1678657663af46606c06d6@192.168.0.150:30301 --port 30303 console
 
 # 查看是否正常启动
@@ -285,38 +287,42 @@ npm -v
     5.6.0
 
 
-# 安装mongodb 
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list  
+# 使用ali源安装安装mongodb 
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5 
+echo "deb [ arch=amd64 ] http://mirrors.aliyun.com/mongodb/apt/ubuntu trusty/mongodb-org/3.6 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.6.list  
+
 # 安装最新版本
 apt-get install -y mongodb-org
 
 # 安装指定版本
-sudo apt-get install -y mongodb-org=2.6.9 mongodb-org-server=2.6.9 mongodb-org-shell=2.6.9 mongodb-org-mongos=2.6.9 mongodb-org-tools=2.6.9
-
+sudo apt-get install -y mongodb-org=3.6.4 mongodb-org-server=3.6.4 mongodb-org-shell=3.6.4 mongodb-org-mongos=3.6.4 mongodb-org-tools=3.6.4  
 # 运行mongodb
-# 默认端口27017 （/etc/mongod.conf）
-service mongod start
+# 默认端口27017 （/service mongod startetc/mongod.conf）
+
+
+
+npm install -g bower
+
 ```
 
 3.配置服务
 ```shell
 # 克隆项目  
 git clone http://zhanghy@172.17.20.127/wangzg/ethereum-api.git    
-cd ethereum-api & npm install    
+cd ethereum-api & npm install
+bower install --allow-root
+
 
 # 修改配置config.js中的db和node项
 vi config/config.js
-var config = {
+
   db: {
     url: 'mongodb://127.0.0.1:27017/ethtree'
   },
   node: {
     ws: "ws://192.168.0.150:8546"
   }
-}
 
-module.exports = config;
 ```
 
 4.之前启动节点时没有启用WS-RPC服务器，重新启动节点
@@ -325,6 +331,10 @@ module.exports = config;
 geth --datadir ./data --networkid 20180412 --ws --wsaddr 0.0.0.0  --wsport 8546 --wsorigins=* --bootnodes=enode://912a150237986ed3df6998fe516b1ae7e82f729546c695ace3aa172f5276ca6dffffaf9125eaa7c8b1adea60f002bd7df2d15d021d1678657663af46606c06d6@192.168.0.150:30301 --port 30303 console 
 # 节点二
 geth --datadir ./data --networkid 20180412 --ws --wsaddr 0.0.0.0  --wsport 8546 --wsorigins=* --bootnodes=enode://912a150237986ed3df6998fe516b1ae7e82f729546c695ace3aa172f5276ca6dffffaf9125eaa7c8b1adea60f002bd7df2d15d021d1678657663af46606c06d6@192.168.0.150:30301 --port 30303 console
+
+
+root@ethereum-1:~/ethereum-bootstrap/3.LocalNetworkCluster/node1# geth attach ./data/geth.ipc 
+Welcome to the Geth JavaScript console!
 
 ```
 
@@ -341,7 +351,7 @@ mongodb opened
 
 6.初始化本地数据 
 ```shell
-curl http://locathost:3000/blocks/sync
+curl http://localhost:3000/blocks/sync
 # 访问
 http://192.168.0.150:3000/（http://locathost:3000）
 ```
@@ -362,6 +372,7 @@ http://192.168.0.150:3000/（http://locathost:3000）
 > personal.newAccount("123456")
 "0x585b0cc9f603b824c1344542821c162ae80d351a"
 
+# 以太坊的一个保护机制，每隔一段时间账户就会自动锁定，这个时候任何以太币在账户之间的转换都会被拒绝，需要解锁账户
 > personal.unlockAccount("0x585b0cc9f603b824c1344542821c162ae80d351a")
 Unlock account 0x585b0cc9f603b824c1344542821c162ae80d351a
 Passphrase: 123456
@@ -378,6 +389,7 @@ true
 > web3.fromWei(eth.getBalance(eth.accounts[0]), "ether")
 0
 
+# balance： 地址拥有Wei的数量。1Ether=10^18Wei
 ```
 
 2.挖矿
@@ -442,9 +454,8 @@ INFO [05-09|06:16:56] Imported new chain segment               blocks=1 txs=0 mg
 > personal.listAccounts
 ["0x585b0cc9f603b824c1344542821c162ae80d351a"]
 
-> eth.sendTransaction({from:"0x585b0cc9f603b824c1344542821c162ae80d351a",to:"0XADE59D945A323E56664D530613D3725A7267EBA4",value:web3.toWei(10,"ether")})
+> eth.sendTransaction({from:"0x585b0cc9f603b824c1344542821c162ae80d351a",to:"0XADE59D945A323E56664D530613D3725A7267EBA4",value:web3.toWei(11,"ether")})
 "0xa5ba027c636b422710bc7dabc61adb2983b82aae379568c59d730023bd8f5951"
-
 > txpool.content
 {
   pending: {
@@ -545,3 +556,55 @@ true
 > web3.fromWei(eth.getBalance(eth.accounts[0]), "ether")
 135
 ```
+
+
+节点启动，进入console
+```shell 
+# bootnode
+cd /root/ethereum-bootstrap/3.LocalNetworkCluster/bootnode
+nohup bootnode --nodekey=boot.key &
+
+# 节点一
+cd /root/ethereum-bootstrap/3.LocalNetworkCluster/node1/
+
+geth --datadir ./data --networkid 20180412 --ws --wsaddr 0.0.0.0  --wsport 8546 --wsorigins=* --bootnodes=enode://912a150237986ed3df6998fe516b1ae7e82f729546c695ace3aa172f5276ca6dffffaf9125eaa7c8b1adea60f002bd7df2d15d021d1678657663af46606c06d6@192.168.0.150:30301 --port 30303 console 
+
+# 节点二
+cd /root/ethereum-bootstrap/3.LocalNetworkCluster/node2/
+
+geth --datadir ./data --networkid 20180412 --ws --wsaddr 0.0.0.0  --wsport 8546 --wsorigins=* --bootnodes=enode://912a150237986ed3df6998fe516b1ae7e82f729546c695ace3aa172f5276ca6dffffaf9125eaa7c8b1adea60f002bd7df2d15d021d1678657663af46606c06d6@192.168.0.150:30301 --port 30303 console
+```
+
+
+以太坊的工作原理
+```shell
+# 以太坊的工作原理
+https://blog.csdn.net/itchosen/article/details/78655903
+
+# 以太坊的账户和基本单位
+https://blog.csdn.net/ddffr/article/details/77007353
+
+# 以太坊源码P2P网络及节点发现机制
+https://blog.csdn.net/DDFFR/article/details/78919530
+
+# 以太坊数据存储分析
+https://blog.csdn.net/ddffr/article/details/77500513
+
+
+```
+
+## 一些参考
+```shell 
+https://web3js.readthedocs.io/en/1.0/web3-eth-subscribe.html
+
+
+https://amsterdam.luminis.eu/2015/01/01/c3js-directives-for-angularjs/
+https://www.94eth.com/tutorial/shen-ru-qian-chu-yi-tai-fang-01-qu-kuai-lian
+
+remix IDE 
+https://remix.ethereum.org/#version=soljson-v0.4.15+commit.bbb8e64f.js
+```
+Address Growth Chart
+Block Difficulty Growth Chart
+Total Daily GasUsed Chart
+Average GasLimit Chart
