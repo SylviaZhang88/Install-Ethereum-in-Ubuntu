@@ -1,1 +1,0 @@
-docker build -t mongodb:3.6.5 .
