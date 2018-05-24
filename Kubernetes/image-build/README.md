@@ -1,6 +1,6 @@
 # Build base image
 
-cd Kubernetes/mongodb  
+cd Kubernetes/image-build/mongodb  
 source build.sh
 
 docker image ls  
