@@ -297,9 +297,7 @@ apt-get install -y mongodb-org
 # 安装指定版本
 sudo apt-get install -y mongodb-org=3.6.4 mongodb-org-server=3.6.4 mongodb-org-shell=3.6.4 mongodb-org-mongos=3.6.4 mongodb-org-tools=3.6.4  
 # 运行mongodb
-# 默认端口27017 （/service mongod startetc/mongod.conf）
-
-
+# 默认端口27017 
 
 npm install -g bower
 
